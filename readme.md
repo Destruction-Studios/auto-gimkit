@@ -2,9 +2,9 @@
 
 1. Install python version 3.14.x
 2. Install tesseract (LINK)
-3. Create a folder anywhere on your computer and put goykit.py into it
+3. Create a folder anywhere on your computer and put program.py into it
 4. Open gimkit and go to the question screen
-5. Open a terminal targeting said folder and run `python goykit.py`
+5. Open a terminal targeting said folder and run `python program.py`
 6. Follow the instructions it gives you by pressing in the areas shown here ![instr](./image.png)
 
 ### Installing tesseract
@@ -16,4 +16,4 @@
 
 ### First setup
 
-When the file is first run it will need to calibrate positions for different screen sizes (can be rerun with `--reset`)
+When the file is first run it will need to calibrate positions for different screen sizes (can be reset with `--reset`)

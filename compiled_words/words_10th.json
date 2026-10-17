@@ -130,5 +130,81 @@
   "ipse, lpsa, ipsum": {
     "latin": "ipse, lpsa, ipsum",
     "english": "the very, the actual"
+  },
+  "nübes, nübis, f:": {
+    "latin": "nübes, nübis, f:",
+    "english": "cloud"
+  },
+  "animal, animalis, n:": {
+    "latin": "animal, animalis, n:",
+    "english": "living creature"
+  },
+  "mare, maris, n:": {
+    "latin": "mare, maris, n:",
+    "english": "sea"
+  },
+  "vito, vitàre, vitavi, vitatum": {
+    "latin": "vito, vitàre, vitavi, vitatum",
+    "english": "to avoid"
+  },
+  "turba, turbae, f:": {
+    "latin": "turba, turbae, f:",
+    "english": "crowd"
+  },
+  "vis, vis, f:": {
+    "latin": "vis, vis, f:",
+    "english": "force, power"
+  },
+  "aqua, aquee, f:": {
+    "latin": "aqua, aquee, f:",
+    "english": "water"
+  },
+  "ars, artis, f:": {
+    "latin": "ars, artis, f:",
+    "english": "skill"
+  },
+  "a, ab: prep -* ablative:": {
+    "latin": "a, ab: prep -* ablative:",
+    "english": "from, by"
+  },
+  "os, oris, n:": {
+    "latin": "os, oris, n:",
+    "english": "mouth"
+  },
+  "müto, mütare, mütavi, muütatum": {
+    "latin": "müto, mütare, mütavi, muütatum",
+    "english": "to change"
+  },
+  "trans: prep * accusative:": {
+    "latin": "trans: prep * accusative:",
+    "english": "across"
+  },
+  "civis, civis, m/f:": {
+    "latin": "civis, civis, m/f:",
+    "english": "citizen"
+  },
+  "urbs, urbis, f:": {
+    "latin": "urbs, urbis, f:",
+    "english": "city"
+  },
+  "mors, mortis, f:": {
+    "latin": "mors, mortis, f:",
+    "english": "death"
+  },
+  "curro, currere, cucurri, cursum": {
+    "latin": "curro, currere, cucurri, cursum",
+    "english": "to run"
+  },
+  "teneo, tenere, tenui, tentum": {
+    "latin": "teneo, tenere, tenui, tentum",
+    "english": "to hold"
+  },
+  "roma, romae, f:": {
+    "latin": "roma, romae, f:",
+    "english": "rome"
+  },
+  "appello, apellare, appellavir, appellatum": {
+    "latin": "appello, apellare, appellavir, appellatum",
+    "english": "to call, name"
   }
 }

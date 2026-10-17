@@ -290,7 +290,7 @@ def main():
         if rs:
             toast.show("continuing...")
             if not clickContinue(result_pt, cont_pt):
-                toast.show("Continue didn't work, press it yourself", RED)
+                toast.show("Please press continue", RED)
         else:
             toast.show("No result screen detected, not continuing", RED)
         
