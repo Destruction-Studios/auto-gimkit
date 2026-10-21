@@ -1,3 +1,5 @@
 settings.json
 words.json
 data.json
+__pycache__/
+*.pyc
