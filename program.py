@@ -201,7 +201,7 @@ def main():
 
                 if answer:
                     pass
-                    # setDefOnWindow(window, answer, "orange")
+                    setDefOnWindow(window, answer, "orange")
                 if answer and word:
                     print("Saved:", words.add(word, answer))
                     handledWord = normalize(word)
@@ -211,11 +211,11 @@ def main():
                 setReadLatinOnWindow(window, "None", "red")
                 continue
 
-            # setReadLatinOnWindow(window, latinText, "green")
+            setReadLatinOnWindow(window, latinText, "green")
 
             entry = words.get(latinText)
             if entry is None:
-                # setFoundOnWindow(window, "PLEASE SELECT ANSWER")
+                setFoundOnWindow(window, "PLEASE SELECT ANSWER")
                 continue
 
             answer = entry["english"]

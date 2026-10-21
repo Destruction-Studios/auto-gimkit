@@ -198,5 +198,21 @@
   "ā, ab: prep + ablative:": {
     "latin": "ā, ab: prep + ablative:",
     "english": "from, by"
+  },
+  "diū: adv:": {
+    "latin": "diū: adv:",
+    "english": "for a long time"
+  },
+  "iūs, iūris, n:": {
+    "latin": "iūs, iūris, n:",
+    "english": "right, justice"
+  },
+  "currō, currere, cucurrī, cursum": {
+    "latin": "currō, currere, cucurrī, cursum",
+    "english": "to run"
+  },
+  "animal, animalis, n:": {
+    "latin": "animal, animalis, n:",
+    "english": "living creature"
   }
 }
