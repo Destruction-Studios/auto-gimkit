@@ -1,210 +1,202 @@
 {
-  "olim: adv:": {
-    "latin": "olim: adv:",
-    "english": "once"
+  "mūtō, mūtāre, mūtāvī, mūtātum": {
+    "latin": "mūtō, mūtāre, mūtāvī, mūtātum",
+    "english": "to change"
   },
-  "nüper: adv:": {
-    "latin": "nüper: adv:",
-    "english": "recently"
+  "teneō, tenēre, tenuī, tentum": {
+    "latin": "teneō, tenēre, tenuī, tentum",
+    "english": "to hold"
   },
-  "creo, creare, creavi, creatum": {
-    "latin": "creo, creare, creavi, creatum",
-    "english": "to create"
+  "per: prep + acc": {
+    "latin": "per: prep + acc",
+    "english": "through"
   },
-  "ante: prep * acc": {
-    "latin": "ante: prep * acc",
-    "english": "before"
-  },
-  "pater, patris, m.": {
-    "latin": "pater, patris, m.",
-    "english": "father"
-  },
-  "factum, facti, n:": {
-    "latin": "factum, facti, n:",
-    "english": "deed, action"
-  },
-  "sto, stare, steti, statum": {
-    "latin": "sto, stare, steti, statum",
-    "english": "to stand"
-  },
-  "pro: prep. -* abl.:": {
-    "latin": "pro: prep. -* abl.:",
-    "english": "instead of, in front of"
-  },
-  "alo, alere, alui, altum": {
-    "latin": "alo, alere, alui, altum",
-    "english": "to nourish, support"
-  },
-  "suus, sua, suum": {
-    "latin": "suus, sua, suum",
-    "english": "his own, her own, its own"
-  },
-  "asia, -ae, f.": {
-    "latin": "asia, -ae, f.",
-    "english": "asia minor"
-  },
-  "ante: adv:": {
-    "latin": "ante: adv:",
-    "english": "before, previously"
-  },
-  "doctus, docta, doctum": {
-    "latin": "doctus, docta, doctum",
-    "english": "learned, skilled"
-  },
-  "mater, matris, f.": {
-    "latin": "mater, matris, f.",
-    "english": "mother"
-  },
-  "divitiae, divitiarum, f. pl:": {
-    "latin": "divitiae, divitiarum, f. pl:",
-    "english": "riches, wealth"
-  },
-  "annus, -1, m.": {
-    "latin": "annus, -1, m.",
-    "english": "year"
-  },
-  "fortünatus, fortünata, fortüunatum": {
-    "latin": "fortünatus, fortünata, fortüunatum",
-    "english": "lucky, happy"
-  },
-  "patientia, -ae, f.": {
-    "latin": "patientia, -ae, f.",
-    "english": "patience, suffering"
-  },
-  "diü: adv:": {
-    "latin": "diü: adv:",
-    "english": "for along time"
-  },
-  "diligo, diligere, dilexi, dilectum": {
-    "latin": "diligo, diligere, dilexi, dilectum",
-    "english": "to esteem, love"
-  },
-  "adulescens, adulescentis, m/f": {
-    "latin": "adulescens, adulescentis, m/f",
-    "english": "young man, young woman"
-  },
-  "cado, cadere, cecidi, casüurum": {
-    "latin": "cado, cadere, cecidi, casüurum",
+  "cadō, cadere, cecidī, cāsūrum": {
+    "latin": "cadō, cadere, cecidī, cāsūrum",
     "english": "to fall"
   },
-  "principium, -ii, n.": {
-    "latin": "principium, -ii, n.",
-    "english": "beginning"
+  "urbs, urbis, f:": {
+    "latin": "urbs, urbis, f:",
+    "english": "city"
   },
-  "quisque, quidque": {
-    "latin": "quisque, quidque",
-    "english": "each one, each person"
+  "nūbēs, nūbis, f:": {
+    "latin": "nūbēs, nūbis, f:",
+    "english": "cloud"
   },
-  "signum, signi, n:": {
-    "latin": "signum, signi, n:",
-    "english": "sign"
-  },
-  "caesar, caesaris, m.": {
-    "latin": "caesar, caesaris, m.",
-    "english": "caesar"
-  },
-  "acerbus, -a, -um": {
-    "latin": "acerbus, -a, -um",
-    "english": "harsh, bitter"
+  "iungō, iungere, iūnxī, iūnctum": {
+    "latin": "iungō, iungere, iūnxī, iūnctum",
+    "english": "to join"
   },
   "nam": {
     "latin": "nam",
     "english": "for"
   },
-  "lungo, lungere, lünxi, lunctum": {
-    "latin": "lungo, lungere, lünxi, lunctum",
-    "english": "to join"
+  "ōlim: adv:": {
+    "latin": "ōlim: adv:",
+    "english": "once"
   },
-  "sui": {
-    "latin": "sui",
-    "english": "himself, herself, itself"
+  "mors, mortis, f:": {
+    "latin": "mors, mortis, f:",
+    "english": "death"
   },
-  "per: prep * acc": {
-    "latin": "per: prep * acc",
-    "english": "through"
+  "alō, alere, aluī, altum": {
+    "latin": "alō, alere, aluī, altum",
+    "english": "to nourish, support"
   },
-  "amitto, amittere, amisi, amissum": {
-    "latin": "amitto, amittere, amisi, amissum",
+  "ante: adv:": {
+    "latin": "ante: adv:",
+    "english": "before, previously"
+  },
+  "ōs, ōris, n:": {
+    "latin": "ōs, ōris, n:",
+    "english": "mouth"
+  },
+  "pāter, pātris, m.": {
+    "latin": "pāter, pātris, m.",
+    "english": "father"
+  },
+  "vītō, vītāre, vītāvī, vītātum": {
+    "latin": "vītō, vītāre, vītāvī, vītātum",
+    "english": "to avoid"
+  },
+  "nūper: adv:": {
+    "latin": "nūper: adv:",
+    "english": "recently"
+  },
+  "adulēscens, adulēscentis, m/f": {
+    "latin": "adulēscens, adulēscentis, m/f",
+    "english": "young man, young woman"
+  },
+  "patientia, -ae, f.": {
+    "latin": "patientia, -ae, f.",
+    "english": "patience, suffering"
+  },
+  "trāns: prep + accusative:": {
+    "latin": "trāns: prep + accusative:",
+    "english": "across"
+  },
+  "vīs, vīs, f:": {
+    "latin": "vīs, vīs, f:",
+    "english": "force, power"
+  },
+  "rōma, rōmae, f:": {
+    "latin": "rōma, rōmae, f:",
+    "english": "rome"
+  },
+  "doctus, docta, doctum": {
+    "latin": "doctus, docta, doctum",
+    "english": "learned, skilled"
+  },
+  "pars, partis, f:": {
+    "latin": "pars, partis, f:",
+    "english": "part"
+  },
+  "āmittō, āmittere, āmīsī, āmissum": {
+    "latin": "āmittō, āmittere, āmīsī, āmissum",
     "english": "to lose, let go"
   },
-  "ipse, lpsa, ipsum": {
-    "latin": "ipse, lpsa, ipsum",
+  "dīligō, dīligere, dīlēxī, dīlēctum": {
+    "latin": "dīligō, dīligere, dīlēxī, dīlēctum",
+    "english": "to esteem, love"
+  },
+  "factum, factī, n:": {
+    "latin": "factum, factī, n:",
+    "english": "deed, action"
+  },
+  "annus, -ī, m.": {
+    "latin": "annus, -ī, m.",
+    "english": "year"
+  },
+  "fortūnatus, fortūnata, fortūnatum": {
+    "latin": "fortūnatus, fortūnata, fortūnatum",
+    "english": "lucky, happy"
+  },
+  "caesar, caesaris, m.": {
+    "latin": "caesar, caesaris, m.",
+    "english": "caesar"
+  },
+  "prīncipium, -iī, n.": {
+    "latin": "prīncipium, -iī, n.",
+    "english": "beginning"
+  },
+  "stō, stāre, stetī, statum": {
+    "latin": "stō, stāre, stetī, statum",
+    "english": "to stand"
+  },
+  "prō: prep. + abl.:": {
+    "latin": "prō: prep. + abl.:",
+    "english": "instead of, in front of"
+  },
+  "suus, sua, suum": {
+    "latin": "suus, sua, suum",
+    "english": "his own, her own, its own"
+  },
+  "dīvitiae, dīvitiārum, f. pl:": {
+    "latin": "dīvitiae, dīvitiārum, f. pl:",
+    "english": "riches, wealth"
+  },
+  "cīvis, cīvis, m/f:": {
+    "latin": "cīvis, cīvis, m/f:",
+    "english": "citizen"
+  },
+  "ipse, ipsa, ipsum": {
+    "latin": "ipse, ipsa, ipsum",
     "english": "the very, the actual"
   },
-  "nübes, nübis, f:": {
-    "latin": "nübes, nübis, f:",
-    "english": "cloud"
-  },
-  "animal, animalis, n:": {
-    "latin": "animal, animalis, n:",
-    "english": "living creature"
+  "appellō, apellāre, appellāvī, appellātum": {
+    "latin": "appellō, apellāre, appellāvī, appellātum",
+    "english": "to call, name"
   },
   "mare, maris, n:": {
     "latin": "mare, maris, n:",
     "english": "sea"
   },
-  "vito, vitàre, vitavi, vitatum": {
-    "latin": "vito, vitàre, vitavi, vitatum",
-    "english": "to avoid"
+  "creō, creāre, creāvī, creātum": {
+    "latin": "creō, creāre, creāvī, creātum",
+    "english": "to create"
   },
-  "turba, turbae, f:": {
-    "latin": "turba, turbae, f:",
-    "english": "crowd"
-  },
-  "vis, vis, f:": {
-    "latin": "vis, vis, f:",
-    "english": "force, power"
-  },
-  "aqua, aquee, f:": {
-    "latin": "aqua, aquee, f:",
+  "aqua, aquae, f:": {
+    "latin": "aqua, aquae, f:",
     "english": "water"
   },
   "ars, artis, f:": {
     "latin": "ars, artis, f:",
     "english": "skill"
   },
-  "a, ab: prep -* ablative:": {
-    "latin": "a, ab: prep -* ablative:",
+  "turba, turbae, f:": {
+    "latin": "turba, turbae, f:",
+    "english": "crowd"
+  },
+  "asia, -ae, f.": {
+    "latin": "asia, -ae, f.",
+    "english": "asia minor"
+  },
+  "māter, mātris, f.": {
+    "latin": "māter, mātris, f.",
+    "english": "mother"
+  },
+  "ante: prep + acc": {
+    "latin": "ante: prep + acc",
+    "english": "before"
+  },
+  "acerbus, -a, -um": {
+    "latin": "acerbus, -a, -um",
+    "english": "harsh, bitter"
+  },
+  "quisque, quidque": {
+    "latin": "quisque, quidque",
+    "english": "each one, each person"
+  },
+  "suī": {
+    "latin": "suī",
+    "english": "himself, herself, itself"
+  },
+  "signum, signī, n:": {
+    "latin": "signum, signī, n:",
+    "english": "sign"
+  },
+  "ā, ab: prep + ablative:": {
+    "latin": "ā, ab: prep + ablative:",
     "english": "from, by"
-  },
-  "os, oris, n:": {
-    "latin": "os, oris, n:",
-    "english": "mouth"
-  },
-  "müto, mütare, mütavi, muütatum": {
-    "latin": "müto, mütare, mütavi, muütatum",
-    "english": "to change"
-  },
-  "trans: prep * accusative:": {
-    "latin": "trans: prep * accusative:",
-    "english": "across"
-  },
-  "civis, civis, m/f:": {
-    "latin": "civis, civis, m/f:",
-    "english": "citizen"
-  },
-  "urbs, urbis, f:": {
-    "latin": "urbs, urbis, f:",
-    "english": "city"
-  },
-  "mors, mortis, f:": {
-    "latin": "mors, mortis, f:",
-    "english": "death"
-  },
-  "curro, currere, cucurri, cursum": {
-    "latin": "curro, currere, cucurri, cursum",
-    "english": "to run"
-  },
-  "teneo, tenere, tenui, tentum": {
-    "latin": "teneo, tenere, tenui, tentum",
-    "english": "to hold"
-  },
-  "roma, romae, f:": {
-    "latin": "roma, romae, f:",
-    "english": "rome"
-  },
-  "appello, apellare, appellavir, appellatum": {
-    "latin": "appello, apellare, appellavir, appellatum",
-    "english": "to call, name"
   }
 }

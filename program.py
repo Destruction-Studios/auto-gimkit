@@ -1,301 +1,241 @@
 import time
-import pyautogui
-import pytesseract
-import difflib
-import tkinter as tk
-import ctypes
 import json
-import sys
+from json import JSONDecodeError
+from selenium import webdriver
 from pathlib import Path
-from PIL import ImageOps
-from pynput import mouse
+from bs4 import BeautifulSoup
+import PySimpleGUI as sg
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import (
+    ElementClickInterceptedException,
+    StaleElementReferenceException,
+    TimeoutException,
+    WebDriverException,
+)
+from words import WordDb
 
-MATCH_THRESHOLD = 0.6
-ORANGE, GREEN, RED = "#e08a00", "#2e9e5b", "#c0392b"
+path = Path("data.json")
+default_data = {
+    "user-data": "C:\\Users\\tcasa\\selenium-chrome-data",
+    "profile-name": "Default",
+    "gimkit-link": "https://gimkit.com"
+}
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-
-class Toast:
-    def __init__(self):
-        self.root = tk.Tk()
-        self.root.overrideredirect(True)
-        self.root.attributes("-topmost", True)
-        self.label = tk.Label(self.root, font=("Segoe UI", 14, "bold"),
-                              fg="white", padx=20, pady=12)
-        self.label.pack()
-        self.root.withdraw()
-        self._hide_id = None
-
-    def show(self, text, color="#2e9e5b", ms=2000):
-        self.label.config(text=text, bg=color)
-        self.root.update_idletasks()
-        w = self.root.winfo_reqwidth()
-        self.root.geometry(f"+{self.root.winfo_screenwidth() - w - 20}+20")
-        self.root.deiconify()
-        if self._hide_id:
-            self.root.after_cancel(self._hide_id) 
-        self._hide_id = self.root.after(ms, self.root.withdraw)
-        self.root.update()
-
-    def tick(self):
-        self.root.update()
+ANSWER_SELECTOR = "div.sc-ixcdjX.kLONFv"
+CONTINUE_SELECTOR = "div.sc-eEHciv.hkdshG"
 
 
-toast = Toast()
+LISTENER_JS = """
+if (!window.__listenerInstalled) {
+    window.__listenerInstalled = true;
+    window.__clicked = [];
+    document.addEventListener('click', e => {
+        const el = e.target.closest('.sc-ixcdjX.kLONFv');
+        if (!el) return;
+        const span = el.querySelector('span.notranslate');
+        const word = document.querySelector('.sc-itBLYH.botDlG span.lang-en');
+        window.__clicked.push({
+            answer: (span || el).innerText.trim(),
+            word: word ? word.textContent.trim() : null,
+        });
+    }, true);
+}
+"""
 
-DB_FILE = Path(__file__).parent / "words.json"
-SETTINGS_FILE = Path(__file__).parent / "settings.json"
+POP_CLICKS_JS = "const c = window.__clicked || []; window.__clicked = []; return c;"
 
-def loadDb():
-    if DB_FILE.exists():
-        return json.loads(DB_FILE.read_text(encoding="utf-8"))
-    return {}
-
-def saveDb(db):
-    DB_FILE.write_text(json.dumps(db, indent=2, ensure_ascii=False), encoding="utf-8")
 
 def loadSettings():
-    if not SETTINGS_FILE.exists():
-        return None
+    data = default_data
+    print("loading json")
     try:
-        data = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
-        return {k: tuple(data[k]) for k in ("result_pt", "cont_pt", "word_region", "answer_region")}
-    except (json.JSONDecodeError, KeyError, TypeError):
-        print("settings.json is corrupted or incomplete, asking again")
-        return None
-
-def saveSettings(settings):
-    SETTINGS_FILE.write_text(json.dumps(settings, indent=2), encoding="utf-8")
-
-def askSettings():
-    return {
-        "result_pt": waitForClick("Click a spot that turns red/green to determine correct answer"),
-        "word_region": defineRegion("Latin Word"),
-        "answer_region": defineRegion("Answers"),
-        "cont_pt": waitForClick("Click where the continue button will be"),
-    }
-
-def findKey(word, db):
-    if word in db:
-        return word
-    close = difflib.get_close_matches(word, db.keys(), n=1, cutoff=0.85)
-    return close[0] if close else None
-
-
-def waitForClick(pr, suppress=False):
-    print(pr)
-    toast.show(pr)
-    result = {}
-
-    def onClick(x, y, button, pressed):
-        if pressed:
-            result["pos"] = (x,y)
-            return False
-    
-    with mouse.Listener(on_click=onClick) as listener:
-        listener.join()
-
-    print(f"    got {result['pos']}")
-    time.sleep(0.3)
-    return result["pos"]
-
-def defineRegion(name):
-    x1, y1 = waitForClick(f"[{name}] Click the TOP-LEFT corner...", True)
-    x2, y2 = waitForClick(f"[{name}] Click the BOTTOM-RIGHT corner...", True)
-
-    left, top = min(x1, x2), min(y1, y2)
-    return (left, top, abs(x2-x1), abs(y2-y1))
-
-def getCells(img):
-    w,h = img.size
-    cells=[]
-    for row in range(2):
-        for col in range(2):
-            cells.append(img.crop((col*w//2, row*h//2, (col+1)*w//2, (row+1)*h//2)))
-    
-    return cells
-
-def readText(src, lang="eng", psm=7, threshold=False, scale=2):
-    img = pyautogui.screenshot(region=src) if isinstance(src, tuple) else src
-    img = ImageOps.grayscale(img)
-    img = img.resize((img.width*scale, img.height*scale))
-    if threshold:
-        img = img.point(lambda p: 255 if p > 140 else 0)
-
-    return pytesseract.image_to_string(img, config=f"--psm {psm}", lang=lang).strip().lower()
-
-def cropToText(img, pad=10):
-    bbox=ImageOps.invert(img).getbbox()
-    if bbox is None:
-        return None
-    return ImageOps.expand(img.crop(bbox), border=pad, fill=255)
-
-def readLatin(reg):
-    return readText(reg, lang="lat", psm=7, threshold=True)
-
-def readCell(img):
-    img = ImageOps.grayscale(img)
-    img = img.point(lambda p: 0 if p > 200 else 255)
-    img = cropToText(img)
-
-    if img is None:
-        return ""
-
-    text = readText(img, lang="eng", psm=6, scale=3)
-    return " ".join(text.split())
-
-def cellCenter(idx, region):
-    left, top, w, h = region
-    row, col = divmod(idx, 2)
-    return (int(left + (col + 0.5) * w / 2), int(top + (row + 0.5) * h / 2))
-
-def attemptToAnswer(entry, region):
-    target = entry["english"]
-
-    ss = pyautogui.screenshot(region=region)
-    best_score, best_idx = 0, None
-    for idx, cell in enumerate(getCells(ss)):
-        text = readCell(cell)
-        score = difflib.SequenceMatcher(None, target,text).ratio()
-        if score >best_score:
-            best_score, best_idx = score, idx
-        
-    if best_idx is not None and best_score >= MATCH_THRESHOLD:
-        pyautogui.click(*cellCenter(best_idx, region))
-        print(f"{entry['latin']} -> {target} (MATCH {best_score:.3f})")
-        return True
-    
-    print(f"Couldnt find '{target}' on screen (best {best_score:.3f})")
-    toast.show(f"Couldn't find '{target}', click the right one", RED)
-    return False
-
-def classifyColor(r,g,b):
-    if g>r+40 and g > b + 40:
-        return "yes"
-    if r > g+40 and r > b+40:
-        return "no"
-    return None
-
-def getResult(pt):
-    x,y=int(pt[0]), int(pt[1])
-    img=pyautogui.screenshot(region=(x-2, y-2, 5, 5)).convert("RGB")
-    r,g,b = img.resize((1, 1)).getpixel((0, 0))
-    return classifyColor(r,g,b)
-
-def waitForResult(pt,timeout=4):
-    end = time.time() + timeout
-    while time.time() < end:
-        res = getResult(pt)
-        if res:
-            return res
-        time.sleep(.01)
-    return None
-
-def learnSol(word, key, db, region, result_pt):
-    ss = pyautogui.screenshot(region=region)
-    cells = getCells(ss)
-
-    x,y=waitForClick(f"Adding dict entry '{word}': click correct answer")
-
-    left,top,w,h = region
-
-    if not (left <= x < left + w and top <= y < top +h):
-        toast.show("Click was outside answers area", "RED")
-        return
-    
-    col = 0 if x < left + w / 2 else 1
-    row = 0 if y < top + h/2 else 1
-    eng = readCell(cells[row * 2+col])
-
-
-    if not eng:
-        toast.show("can not read answer", RED)
-        return
-    
-    time.sleep(.1)
-    result = waitForResult(result_pt)
-
-    if result == "yes": 
-        db[key] = {"latin":word, "english":eng}
-        saveDb(db)
-        toast.show(f"Saved {word} -> {eng}")
-        print(f"SAVED {word} -> {eng}")
-    elif result == "no":
-        print(f"Wrong not saving: {word} -> {eng}")
-        toast.show("Wrong, not saving", RED)
+        with path.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print("File not found, creating file")
+        with path.open("w", encoding="utf-8") as f:
+            json.dump(default_data, f, indent=4)
+            print("File created")
+        return default_data
+    except JSONDecodeError:
+        print("Json decode error")
+        return default_data
     else:
-        print("UNABLE TO DETERMINE IF CORRECT")
-        toast.show("UNABLE TO DETERMINE IF CORRECT")
+        print("Loaded successfully")
+        return data
 
-def clickContinue(result_pt, cont_pt, timeout=8):
-    end = time.time() + timeout
-    while time.time() < end:
-        if getResult(result_pt) is None:
+    return data
+
+def makeChromeDriver(data) -> webdriver.Chrome:
+    options = webdriver.ChromeOptions()
+    options.add_argument(f"--user-data-dir={data["user-data"]}")
+    options.add_argument(f"--profile-directory={data["profile-name"]}")
+    options.add_argument("--start-maximized")
+    driver = webdriver.Chrome(options=options, keep_alive=True)
+    return driver
+
+def readLatinText(driver: webdriver.Chrome) -> str | None:
+    soup = BeautifulSoup(driver.page_source, "html.parser")
+    span = soup.select_one(".sc-itBLYH.botDlG span.lang-en")
+    return span.get_text(strip=True) if span else None
+
+def normalize(text: str) -> str:
+    return " ".join(text.split()).lower()
+
+def renderWindow() -> sg.Window:
+    layout = [
+        [
+            sg.Text("Current Latin Word: None", key="-LATINWORD-"),
+            sg.Text("Last pressed def: None", key="-ENGWORD-"),
+        ],
+        [
+            sg.Text("Table: None", key="-DEF-"),
+        ],
+        [
+            sg.Text("Start assignment, open vocab quiz and press start")
+        ],
+        [
+            sg.Button("Start")
+        ]
+    ]
+
+    window = sg.Window(title="Auto gimkit", layout=layout, margins=[15, 15], keep_on_top=True, finalize=True)
+    return window
+
+def setReadLatinOnWindow(window: sg.Window, txt: str | None, color = "white"):
+    window["-LATINWORD-"].update(f"Current Latin Word: {txt}", text_color=color)
+
+def setDefOnWindow(window: sg.Window, txt: str, color="white"):
+    window["-ENGWORD-"].update(f"Last pressed def: {txt}", text_color=color)
+
+def setFoundOnWindow(window: sg.Window, txt: str, color="white"):
+    window["-DEF-"].update(f"Table: {txt}", text_color=color)
+
+
+def injectClickListener(driver: webdriver.Chrome) -> None:
+    driver.execute_script(LISTENER_JS)
+
+def popClicks(driver: webdriver.Chrome) -> list[dict]:
+    return driver.execute_script(POP_CLICKS_JS)
+
+def clearClicks(driver: webdriver.Chrome) -> None:
+    driver.execute_script("window.__clicked = [];")
+
+def getAnswerElement(driver, text: str, exact=True):
+    target = text.strip().lower()
+    for div in driver.find_elements(By.CSS_SELECTOR, ANSWER_SELECTOR):
+        for span in div.find_elements(By.CSS_SELECTOR, "span.notranslate"):
+            content = span.text.strip().lower()
+            if (content == target) if exact else (target in content):
+                return div
+    return None
+
+def clickAnswer(driver, text: str, exact=True, retries=3) -> bool:
+    for _ in range(retries):
+        try:
+            div = getAnswerElement(driver, text, exact)
+            if div is None:
+                return False
+            div.click()
             return True
-        pyautogui.click(cont_pt[0], cont_pt[1])
-        time.sleep(0.03)
+        except (StaleElementReferenceException, ElementClickInterceptedException):
+            time.sleep(0.02)
     return False
+
+def clickContinue(driver, timeout=3, retries=3) -> bool:
+    locator = (By.CSS_SELECTOR, CONTINUE_SELECTOR)
+    for _ in range(retries):
+        try:
+            WebDriverWait(driver, timeout).until(
+                EC.element_to_be_clickable(locator)
+            ).click()
+            return True
+        except (StaleElementReferenceException, ElementClickInterceptedException):
+            time.sleep(0.02)
+        except TimeoutException:
+            return False
+    return False
+
 
 def main():
-    settings = None if "--reset" in sys.argv else loadSettings()
+    data = loadSettings()
+    words = WordDb()
+    window = renderWindow()
+    driver = makeChromeDriver(data)
+    driver.get(data["gimkit-link"])
 
-    if settings:
-        toast.show("Loaded saved settings")
-        print("Loaded settings.json")
-    else:
-        settings = askSettings()
-        saveSettings(settings)
-        print("Saved settings.json")
+    checkInterval = 75
+    started = False
+    handledWord = None
+    lastPrinted = None
 
-    result_pt = settings["result_pt"]
-    cont_pt = settings["cont_pt"]
-    word_region = settings["word_region"]
-    answer_region = settings["answer_region"]
+    try:
+        while True:
+            event, _ = window.read(timeout=checkInterval)
+            if event == sg.WIN_CLOSED:
+                break
+            if event == "Start":
+                started = True
 
-    print(f"\nWords:    {word_region}")
-    print(f"\nAnswers:    {answer_region}")
-    db = loadDb()
-    print("\n Loaded DB")
+            try:
+                injectClickListener(driver)
+                latinText = readLatinText(driver)
+                clicked = popClicks(driver)
+            except WebDriverException:
+                print("Browser was closed")
+                break
 
-    ctypes.windll.user32.ShowWindow(
-        ctypes.windll.kernel32.GetConsoleWindow(),
-        6
-    )
+            if latinText != lastPrinted:
+                print("Latin word:", latinText)
+                lastPrinted = latinText
 
-    print("\n Watching for words... (CTRL+C TO STOP)\n")
-    last = None
-    while True:
-        toast.tick()
+            if not started:
+                continue
 
-        word = readLatin(word_region)
+            for item in clicked:
+                answer = item.get("answer")
+                word = item.get("word")
+                print("Clicked:", answer, "for", word)
 
-        if not word or word == last:
-            time.sleep(.03)
-            continue
+                if answer:
+                    pass
+                    # setDefOnWindow(window, answer, "orange")
+                if answer and word:
+                    print("Saved:", words.add(word, answer))
+                    handledWord = normalize(word)
 
-        if readLatin(word_region) != word:
-            continue
+            if latinText is None:
+                handledWord = None
+                setReadLatinOnWindow(window, "None", "red")
+                continue
 
-        last = word
-        print(f"\n\nDetected: {word}")
-        toast.show(f"Detected: {word}")
+            # setReadLatinOnWindow(window, latinText, "green")
 
-        key = findKey(word, db)
-        if key and attemptToAnswer(db[key], answer_region):
+            entry = words.get(latinText)
+            if entry is None:
+                # setFoundOnWindow(window, "PLEASE SELECT ANSWER")
+                continue
+
+            answer = entry["english"]
+            setFoundOnWindow(window, answer)
+
+            if normalize(latinText) == handledWord:
+                continue
+
+            if clickAnswer(driver, answer):
+                handledWord = normalize(latinText)
+                clickContinue(driver)
+                clearClicks(driver)
+    finally:
+        words.flush()
+        window.close()
+        try:
+            driver.quit()
+        except WebDriverException:
             pass
-        else:
-            learnSol(word, key or word, db, answer_region, result_pt)
-        
-        rs = waitForResult(result_pt, 3)
-        if rs:
-            toast.show("continuing...")
-            if not clickContinue(result_pt, cont_pt):
-                toast.show("Please press continue", RED)
-        else:
-            toast.show("No result screen detected, not continuing", RED)
-        
-        time.sleep(.03)
-            
+        print("PROGRAM ENDED")
 
 if __name__ == "__main__":
     main()
